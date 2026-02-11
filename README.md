@@ -103,8 +103,8 @@ MITRE ATT&CK, MITRE ATLAS, NIST/CIS, HIPAA/PCI-DSS, SOC 2/FedRAMP
 ## 🏗️ How It's Built
 
 ```
-┌──────────────────────────────────────────────────┐
-│                  Docker Compose                   │
+┌──────────────────────────────────────────────────
+│                  Docker Compose                  
 ├──────────┬──────────┬──────────┬────────────────┤
 │ Frontend │ Backend  │  Kali    │    Ollama      │
 │ Next.js  │ FastAPI  │ Sandbox  │  Local AI      │
