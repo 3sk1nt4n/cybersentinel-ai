@@ -4,8 +4,8 @@
 
 ```
 ┌──────────────────────────────────────────────────────┐
-│                    USER BROWSER                       │
-│              http://localhost:3000                     │
+│                    USER BROWSER                       
+│              http://localhost:3000                    
 └────────────────────┬─────────────────────────────────┘
                      │
 ┌────────────────────▼─────────────────────────────────┐
@@ -18,7 +18,7 @@
 └────────────────────┬─────────────────────────────────┘
                      │ HTTP/SSE
 ┌────────────────────▼─────────────────────────────────┐
-│              BACKEND (FastAPI)                         │
+│              BACKEND (FastAPI)                        
 │  - AI Router (provider-agnostic)                      │
 │  - Chat Streaming (SSE)                               │
 │  - Tool Definitions API                               │
@@ -68,14 +68,13 @@ The router selects the provider based on:
 
 | v1.0 (single HTML file) | v2.0 (Docker architecture) |
 |-------------------------|---------------------------|
-| 13,883 lines in one file | Modular project — 38 files |
 | 493 hardcoded cached responses | Real AI streaming + RAG grounding |
 | Works on one machine only | `docker compose up` anywhere |
 | Ollama-only + basic cloud | 4 providers, any model |
 | No database | Neo4j graph + ChromaDB RAG |
 | Manual nginx setup | Docker handles networking |
 | No API | Full REST API at /docs |
-| 8 tools with queries | All 43 tools with queries |
+| All 33 tools with queries |
 | No knowledge base | Seeded security KB (MITRE, CIS, NIST) |
 
 ## Phase 2 Features
@@ -89,7 +88,6 @@ The router selects the provider based on:
 
 ## Roadmap
 
-- **v2.3:** MCP protocol for tool integration
-- **v2.4:** Kali Linux sandbox for live scanning
-- **v2.5:** Threat Intel feed integration (Shodan, Censys, OTX)
-- **v2.6:** Multi-user auth and role-based access
+- **v2.4:** MCP protocol for tool integration
+
+- **v2.5:** Multi-user auth and role-based access
