@@ -1,4 +1,4 @@
-# 🛡️ CyberSentinel AI - Agentic Security Arsenal
+# 🛡️ CyberSentinel AI - Agentic CyberSecurity Arsenal
 
 **33 real security tools. One AI brain. Runs 100% locally on your machine. Free.**
 
