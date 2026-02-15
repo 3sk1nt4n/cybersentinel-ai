@@ -33,6 +33,11 @@ _FIELD_TO_ENV = {
 _CONFIG_DIR = "/app/data"
 _ENV_FILE_PERSISTENT = os.path.join(_CONFIG_DIR, "settings.env")
 _ENV_FILE_DEFAULT = "/app/.env"
+_SECRET_FIELDS = {
+    "anthropic_api_key", "openai_api_key", "openrouter_api_key",
+    "shodan_api_key", "virustotal_api_key", "otx_api_key",
+    "abuseipdb_api_key", "censys_api_secret"
+}
 
 
 def _get_env_path() -> str:
@@ -76,8 +81,12 @@ _load_persistent_settings()
 
 
 def _persist_to_env(updates: dict[str, str]):
-    """Write updated settings to persistent config file."""
+    """Write updated non-secret settings to persistent config file."""
     try:
+        filtered = {k: v for k, v in updates.items() if settings.allow_plaintext_secret_persistence or k not in _SECRET_FIELDS}
+        if not filtered and updates:
+            print("[Settings] Secret updates applied in-memory only (plaintext persistence disabled)")
+            return
         env_path = _get_env_path()
 
         # Read current file
@@ -88,7 +97,7 @@ def _persist_to_env(updates: dict[str, str]):
             lines = ["# CyberSentinel persistent settings\n"]
 
         # For each update, find and replace the line, or append if not found
-        for field_name, value in updates.items():
+        for field_name, value in filtered.items():
             env_key = _FIELD_TO_ENV.get(field_name)
             if not env_key:
                 continue
@@ -107,8 +116,12 @@ def _persist_to_env(updates: dict[str, str]):
         # Write back
         with open(env_path, "w") as f:
             f.writelines(lines)
+        try:
+            os.chmod(env_path, 0o600)
+        except Exception:
+            pass
 
-        print(f"[Settings] Persisted {len(updates)} setting(s) to {env_path}")
+        print(f"[Settings] Persisted {len(filtered)} setting(s) to {env_path}")
 
     except Exception as e:
         print(f"[Settings] Warning: Could not persist: {e}")
@@ -186,7 +199,7 @@ async def update_settings(req: UpdateSettings):
 
     for req_field, settings_field in fields:
         value = getattr(req, req_field, None)
-        if value:
+        if value is not None:
             setattr(settings, settings_field, value)
             updated.append(settings_field)
             env_updates[settings_field] = value

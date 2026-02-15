@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     app_name: str = "CyberSentinel AI"
     app_version: str = "2.0.0"
     app_env: str = "development"
-    secret_key: str = "change-me"
+    secret_key: str = ""
 
     # AI Provider: ollama | claude | openai | openrouter
     ai_provider: str = "ollama"
@@ -35,7 +35,13 @@ class Settings(BaseSettings):
     # Neo4j
     neo4j_uri: str = "bolt://neo4j:7687"
     neo4j_user: str = "neo4j"
-    neo4j_password: str = "cybersentinel2024"
+    neo4j_password: str = ""
+
+    # API security
+    # Defaults to False in development for backwards compatibility.
+    api_auth_enabled: bool = False
+    api_key: Optional[str] = None
+    allow_plaintext_secret_persistence: bool = False
 
     # ChromaDB
     # Threat Intel Keys
@@ -72,3 +78,25 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+
+def is_production() -> bool:
+    return settings.app_env.lower() in {"prod", "production"}
+
+
+def is_api_auth_active() -> bool:
+    """Whether API auth should be enforced at runtime."""
+    return settings.api_auth_enabled and bool(settings.api_key)
+
+
+def validate_security_settings() -> list[str]:
+    """Return startup security configuration errors."""
+    errors: list[str] = []
+
+    if is_production() and (not settings.secret_key or settings.secret_key == "change-me"):
+        errors.append("SECRET_KEY must be configured and not use defaults in production")
+
+    if is_production() and settings.api_auth_enabled and not settings.api_key:
+        errors.append("API_AUTH_ENABLED=true requires API_KEY to be set in production")
+
+    return errors

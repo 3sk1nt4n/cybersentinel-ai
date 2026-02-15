@@ -15,12 +15,11 @@ import hashlib
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-# Try imports - install if missing
+# Runtime dependencies must be baked into the container image.
 try:
     import requests
-except ImportError:
-    os.system(f"{sys.executable} -m pip install requests --quiet")
-    import requests
+except ImportError as exc:
+    raise RuntimeError("Missing dependency: requests. Add it to backend requirements and rebuild image.") from exc
 
 # ═══════════════════════════════════════════════════════
 # CONFIGURATION

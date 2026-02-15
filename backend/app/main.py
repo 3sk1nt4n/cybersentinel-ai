@@ -4,10 +4,15 @@ FastAPI backend with provider-agnostic AI, 43 security tools,
 Neo4j graph intelligence, and ChromaDB RAG engine.
 """
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+import logging
 from fastapi.middleware.cors import CORSMiddleware
-from app.core.config import settings
+from app.core.config import settings, validate_security_settings
+from app.core.auth import require_api_key
 from app.routers import chat, tools, health, graph, knowledge, scan, intel, history, settings as settings_router, threat_feed, export, elk, splunk, wazuh
+
+
+logger = logging.getLogger("cybersentinel")
 
 
 @asynccontextmanager
@@ -16,13 +21,13 @@ async def lifespan(app: FastAPI):
     try:
         from app.services.graph import init_schema
         await init_schema()
-    except Exception:
-        pass
+    except Exception as e:
+        logger.exception("Startup init_schema failed: %s", e)
     try:
         from app.services.rag import seed_knowledge_base
         await seed_knowledge_base()
-    except Exception:
-        pass
+    except Exception as e:
+        logger.exception("Startup seed_knowledge_base failed: %s", e)
     # Auto-pull threat intel on startup (background thread)
     try:
         import threading
@@ -33,8 +38,8 @@ async def lifespan(app: FastAPI):
             except Exception as e:
                 print(f"[ThreatIntel] Startup pull error: {e}")
         threading.Thread(target=_pull_intel, daemon=True).start()
-    except Exception:
-        pass
+    except Exception as e:
+        logger.exception("Threat intel startup thread failed: %s", e)
     # Seed ELK with sample security logs (waits for ES to be ready)
     try:
         import threading, time
@@ -47,8 +52,12 @@ async def lifespan(app: FastAPI):
             except Exception as e:
                 print(f"[ELK Seeder] Startup error: {e}")
         threading.Thread(target=_seed_elk, daemon=True).start()
-    except Exception:
-        pass
+    except Exception as e:
+        logger.exception("ELK seeder startup thread failed: %s", e)
+
+    security_errors = validate_security_settings()
+    if security_errors:
+        logger.error("Security configuration errors: %s", "; ".join(security_errors))
     yield
 
 
@@ -70,19 +79,19 @@ app.add_middleware(
 
 # Register routers
 app.include_router(health.router)
-app.include_router(chat.router, prefix="/api")
-app.include_router(tools.router, prefix="/api")
-app.include_router(graph.router, prefix="/api")
-app.include_router(knowledge.router, prefix="/api")
-app.include_router(scan.router, prefix="/api")
-app.include_router(intel.router, prefix="/api")
-app.include_router(history.router, prefix="/api")
-app.include_router(settings_router.router, prefix="/api")
-app.include_router(threat_feed.router, prefix="/api")
-app.include_router(export.router, prefix="/api")
-app.include_router(elk.router, prefix="/api")
-app.include_router(splunk.router, prefix="/api")
-app.include_router(wazuh.router, prefix="/api")
+app.include_router(chat.router, prefix="/api", dependencies=[Depends(require_api_key)])
+app.include_router(tools.router, prefix="/api", dependencies=[Depends(require_api_key)])
+app.include_router(graph.router, prefix="/api", dependencies=[Depends(require_api_key)])
+app.include_router(knowledge.router, prefix="/api", dependencies=[Depends(require_api_key)])
+app.include_router(scan.router, prefix="/api", dependencies=[Depends(require_api_key)])
+app.include_router(intel.router, prefix="/api", dependencies=[Depends(require_api_key)])
+app.include_router(history.router, prefix="/api", dependencies=[Depends(require_api_key)])
+app.include_router(settings_router.router, prefix="/api", dependencies=[Depends(require_api_key)])
+app.include_router(threat_feed.router, prefix="/api", dependencies=[Depends(require_api_key)])
+app.include_router(export.router, prefix="/api", dependencies=[Depends(require_api_key)])
+app.include_router(elk.router, prefix="/api", dependencies=[Depends(require_api_key)])
+app.include_router(splunk.router, prefix="/api", dependencies=[Depends(require_api_key)])
+app.include_router(wazuh.router, prefix="/api", dependencies=[Depends(require_api_key)])
 
 
 @app.get("/")

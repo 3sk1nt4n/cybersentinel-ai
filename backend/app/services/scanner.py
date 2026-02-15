@@ -36,12 +36,16 @@ async def _run_in_sandbox(command: str, timeout: int = 120) -> dict:
         duration = round(time.time() - start, 2)
         out = stdout.decode("utf-8", errors="replace")[:50000]
         err = stderr.decode("utf-8", errors="replace")[:5000]
-        # Always return output - some tools write to stderr even on success
+        # Keep stdout/stderr explicit and mark success from exit status.
         combined = out if out.strip() else err
+        success = proc.returncode == 0
         return {
-            "success": True,  # If we got output, it's a success even if exit code != 0
+            "success": success,
+            "status": "ok" if success else "error",
             "output": combined,
-            "error": err if proc.returncode != 0 and not out.strip() else "",
+            "stdout": out,
+            "stderr": err,
+            "error": err if not success else "",
             "command": command,
             "duration": duration,
             "exit_code": proc.returncode,

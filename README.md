@@ -55,7 +55,14 @@ The platform works fully offline with Ollama, which is a free local AI model. Al
 | `ABUSEIPDB_API_KEY` | [abuseipdb.com/account/api](https://www.abuseipdb.com/account/api) | IP reputation checks |
 | `OTX_API_KEY` | [otx.alienvault.com/settings](https://otx.alienvault.com/settings) | AlienVault OTX threat feeds |
 
-> **Note:** The `.env.example` file only has empty placeholders. You need to get your own API keys from the links above. Never commit real API keys to a public repository.
+For production, set internal app auth keys in `.env`:
+- `API_AUTH_ENABLED=true`
+- `API_KEY=<long-random-value>`
+- `NEXT_PUBLIC_API_KEY=<same-value-as-API_KEY>`
+
+For local/dev quick start, you can leave `API_AUTH_ENABLED=false`.
+
+> **Note:** The `.env.example` file only has placeholders. You need to set your own keys and never commit real secrets to a public repository.
 
 ### Step 3 - Launch Everything
 ```bash
