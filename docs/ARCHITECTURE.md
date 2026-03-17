@@ -1,4 +1,4 @@
-# 🏗️ CyberSentinel v3.0 — Architecture
+# 🏗️ CyberSentinel v3.0 - Architecture
 
 ## Overview
 
@@ -79,7 +79,7 @@ The router selects the provider based on:
 
 ## Phase 2 Features
 
-- **Neo4j Graph Intelligence**: Attack surface mapping — assets, vulnerabilities, techniques, IOCs as a connected graph. API for adding nodes, creating relationships, and querying attack paths.
+- **Neo4j Graph Intelligence**: Attack surface mapping - assets, vulnerabilities, techniques, IOCs as a connected graph. API for adding nodes, creating relationships, and querying attack paths.
 - **ChromaDB RAG Engine**: 5 knowledge base collections (security_kb, mitre_attack, cve_data, compliance, user_docs). Document chunking with overlap, multi-collection search, automatic context injection into AI prompts.
 - **Seed Knowledge Base**: Pre-built security knowledge covering MITRE ATT&CK techniques, CIS Controls, NIST 800-53, PCI-DSS, HIPAA, incident response procedures, and vulnerability prioritization.
 - **All 43 Tool Queries**: Every tool now has 5-10 sample queries (up from 8 tools in Phase 1).

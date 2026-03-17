@@ -1,5 +1,5 @@
 # ══════════════════════════════════════════════════════
-# CyberSentinel AI v3.0 — Frontend (Next.js)
+# CyberSentinel AI v3.0 - Frontend (Next.js)
 # Multi-stage production build with standalone output
 # ══════════════════════════════════════════════════════
 

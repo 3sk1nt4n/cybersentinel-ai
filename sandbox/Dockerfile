@@ -1,6 +1,6 @@
 FROM debian:bookworm-slim
 
-LABEL maintainer="CyberSentinel AI — SolventCyber.com"
+LABEL maintainer="CyberSentinel AI - SolventCyber.com"
 LABEL description="Security tools sandbox for CyberSentinel AI"
 
 # Avoid interactive prompts
@@ -42,7 +42,7 @@ RUN curl -sSL https://github.com/projectdiscovery/nuclei/releases/latest/downloa
     && unzip /tmp/nuclei.zip -d /usr/local/bin/ \
     && rm /tmp/nuclei.zip \
     && rm -rf /var/lib/apt/lists/* \
-    || echo "nuclei install skipped — will work without it"
+    || echo "nuclei install skipped - will work without it"
 
 # Install subfinder
 RUN curl -sSL https://github.com/projectdiscovery/subfinder/releases/latest/download/subfinder_$(curl -sSL https://api.github.com/repos/projectdiscovery/subfinder/releases/latest | jq -r '.tag_name' | tr -d 'v')_linux_amd64.zip -o /tmp/subfinder.zip \
@@ -57,12 +57,12 @@ RUN curl -sSL https://github.com/projectdiscovery/httpx/releases/latest/download
     || echo "httpx install skipped"
 
 # Install Zeek (open source network analysis)
-# Zeek installs to /opt/zeek/bin — must add to PATH
+# Zeek installs to /opt/zeek/bin - must add to PATH
 RUN echo 'deb http://download.opensuse.org/repositories/security:/zeek/Debian_12/ /' > /etc/apt/sources.list.d/security:zeek.list \
     && curl -fsSL https://download.opensuse.org/repositories/security:zeek/Debian_12/Release.key | gpg --dearmor -o /etc/apt/trusted.gpg.d/security_zeek.gpg \
     && apt-get update && apt-get install -y --no-install-recommends zeek-lts \
     && rm -rf /var/lib/apt/lists/* \
-    || echo "zeek install skipped — will use tcpdump fallback"
+    || echo "zeek install skipped - will use tcpdump fallback"
 
 # Add Zeek to PATH (installs to /opt/zeek/bin)
 ENV PATH="/opt/zeek/bin:${PATH}"
@@ -75,7 +75,7 @@ RUN curl -sSL https://github.com/zaproxy/zaproxy/releases/download/v2.15.0/ZAP_2
     && tar -xzf /tmp/zap.tar.gz -C /opt/ \
     && ln -sf /opt/ZAP_2.15.0/zap.sh /usr/local/bin/zap-cli \
     && rm /tmp/zap.tar.gz \
-    || echo "ZAP install skipped — will work without it"
+    || echo "ZAP install skipped - will work without it"
 
 # Ensure /etc/services exists (fixes whois and other tools)
 RUN if [ ! -f /etc/services ]; then \
@@ -89,5 +89,5 @@ RUN if [ ! -f /etc/services ]; then \
 # Stay as root for nmap and other tools that need privileges
 WORKDIR /tmp
 
-# Keep container alive — backend sends commands via docker exec
+# Keep container alive - backend sends commands via docker exec
 CMD ["tail", "-f", "/dev/null"]

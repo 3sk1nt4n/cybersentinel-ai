@@ -1,5 +1,5 @@
 """
-Tests for app.core.middleware — RateLimitStore and AuthMiddleware behaviour.
+Tests for app.core.middleware - RateLimitStore and AuthMiddleware behaviour.
 """
 import time
 from unittest.mock import patch

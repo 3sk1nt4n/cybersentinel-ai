@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "═══════════════════════════════════════════════"
-echo "  CyberSentinel AI v2.0 — Setup"
+echo "  CyberSentinel AI v2.0 - Setup"
 echo "═══════════════════════════════════════════════"
 echo ""
 

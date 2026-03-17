@@ -1,5 +1,5 @@
 /**
- * CyberSentinel v3.0 — API Client
+ * CyberSentinel v3.0 - API Client
  * Communicates with the FastAPI backend.
  */
 
@@ -64,7 +64,7 @@ export async function fetchProviders(): Promise<{ default: string; providers: Pr
   return res.json();
 }
 
-/** Stream a chat response — returns an async iterator of tokens */
+/** Stream a chat response - returns an async iterator of tokens */
 export async function* streamChat(
   messages: ChatMessage[],
   provider?: string,
@@ -171,7 +171,7 @@ export async function uploadToKB(file: File, collection?: string): Promise<any> 
   const form = new FormData();
   form.append('file', file);
   if (collection) form.append('collection', collection);
-  // Note: don't set Content-Type for FormData — browser sets it with boundary
+  // Note: don't set Content-Type for FormData - browser sets it with boundary
   const headers: Record<string, string> = {};
   if (API_KEY) headers['x-api-key'] = API_KEY;
   const res = await fetch(`${API_URL}/api/knowledge/upload`, { method: 'POST', body: form, headers });

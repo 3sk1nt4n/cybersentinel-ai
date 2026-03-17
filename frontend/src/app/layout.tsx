@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'CyberSentinel AI — Agentic Multi-Tool Security Platform',
+  title: 'CyberSentinel AI - Agentic Multi-Tool Security Platform',
   description: '33 security tools, provider-agnostic AI, Docker-powered.',
 }
 

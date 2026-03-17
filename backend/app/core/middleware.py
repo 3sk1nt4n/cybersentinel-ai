@@ -11,7 +11,7 @@ from app.core.config import settings
 
 
 # ═══════════════════════════════════════════════
-# RATE LIMITER — In-memory sliding window
+# RATE LIMITER - In-memory sliding window
 # ═══════════════════════════════════════════════
 
 class RateLimitStore:
@@ -95,7 +95,7 @@ class AuthMiddleware(BaseHTTPMiddleware):
 
 
 class RateLimitMiddleware(BaseHTTPMiddleware):
-    """Rate limiting middleware — per-IP sliding window."""
+    """Rate limiting middleware - per-IP sliding window."""
 
     async def dispatch(self, request: Request, call_next):
         path = request.url.path

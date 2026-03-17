@@ -1,5 +1,5 @@
 """
-Tests for app.core.guardrails — input scanning, output scanning,
+Tests for app.core.guardrails - input scanning, output scanning,
 and multi-turn escalation detection.
 """
 from app.core.guardrails import scan_input, scan_output, check_escalation

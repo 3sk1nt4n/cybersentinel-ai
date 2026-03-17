@@ -1,5 +1,5 @@
 """
-Tests for app.core.intent — detect_intent() pattern matching.
+Tests for app.core.intent - detect_intent() pattern matching.
 """
 from app.core.intent import detect_intent
 

@@ -1,5 +1,5 @@
 /**
- * CyberSentinel v3.0 — Shared utilities and constants
+ * CyberSentinel v3.0 - Shared utilities and constants
  */
 
 // Category display labels

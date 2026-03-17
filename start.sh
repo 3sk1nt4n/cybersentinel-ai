@@ -1,6 +1,6 @@
 #!/bin/bash
 # ══════════════════════════════════════════════════════
-# CyberSentinel AI v2.0 — Auto Setup
+# CyberSentinel AI v2.0 - Auto Setup
 # Creates .env from .env.example if it doesn't exist
 # ══════════════════════════════════════════════════════
 

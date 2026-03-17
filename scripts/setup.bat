@@ -1,6 +1,6 @@
 @echo off
 echo ═══════════════════════════════════════════════
-echo   CyberSentinel AI v2.0 — Windows Setup
+echo   CyberSentinel AI v2.0 - Windows Setup
 echo ═══════════════════════════════════════════════
 echo.
 

@@ -1,5 +1,5 @@
 # ══════════════════════════════════════════════════════
-# CyberSentinel AI v3.0 — Backend (FastAPI)
+# CyberSentinel AI v3.0 - Backend (FastAPI)
 # Multi-stage production build with non-root user
 # ══════════════════════════════════════════════════════
 
@@ -18,7 +18,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # ── Stage 2: Production ──────────────────────────────
 FROM python:3.12-slim
 
-LABEL maintainer="CyberSentinel AI — SolventCyber.com"
+LABEL maintainer="CyberSentinel AI - SolventCyber.com"
 
 WORKDIR /app
 

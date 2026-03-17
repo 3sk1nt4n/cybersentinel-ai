@@ -1,4 +1,4 @@
-# 📖 CyberSentinel v3.0 — Detailed Setup Guide
+# 📖 CyberSentinel v3.0 - Detailed Setup Guide
 
 This guide assumes **zero coding knowledge**. Every step is explained.
 
@@ -15,7 +15,7 @@ CyberSentinel AI is a cybersecurity platform with 33 security tools powered by A
 
 ## How it Works
 
-Everything runs in **Docker containers** — like isolated mini-computers inside your computer. You don't need to install Python, Node.js, or anything else.
+Everything runs in **Docker containers** - like isolated mini-computers inside your computer. You don't need to install Python, Node.js, or anything else.
 
 ```
 Your Computer
@@ -71,7 +71,7 @@ copy .env.example .env
 cp .env.example .env
 ```
 
-**Default settings work out of the box** — Ollama local AI needs no API keys.
+**Default settings work out of the box** - Ollama local AI needs no API keys.
 
 If you want to add cloud AI providers, open `.env` in a text editor and add your keys:
 - `ANTHROPIC_API_KEY=sk-ant-...` (for Claude)
@@ -146,7 +146,7 @@ That's it! 🎉
 cd cybersentinel-v2
 git init
 git add .
-git commit -m "CyberSentinel AI v3.0 — Initial release"
+git commit -m "CyberSentinel AI v3.0 - Initial release"
 git branch -M main
 git remote add origin https://github.com/YOUR_USERNAME/cybersentinel-v2.git
 git push -u origin main

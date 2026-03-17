@@ -1,5 +1,5 @@
 # ══════════════════════════════════════════════════════
-# CyberSentinel AI v3.0 — Docker Compose
+# CyberSentinel AI v3.0 - Docker Compose
 # Usage: docker compose up -d
 # ══════════════════════════════════════════════════════
 
@@ -53,7 +53,7 @@ services:
   ollama:
     image: ollama/ollama:latest
     ports:
-      - "127.0.0.1:11434:11434"  # Localhost only — never bind 0.0.0.0
+      - "127.0.0.1:11434:11434"  # Localhost only - never bind 0.0.0.0
     environment:
       - OLLAMA_HOST=0.0.0.0             # Listen on all interfaces for Docker inter-container networking
       - OLLAMA_MAX_LOADED_MODELS=1      # Prevent memory exhaustion
@@ -129,7 +129,7 @@ services:
       dockerfile: Dockerfile
     container_name: cybersentinel-v2-sandbox-1
     restart: unless-stopped
-    # No ports exposed — backend communicates via docker exec
+    # No ports exposed - backend communicates via docker exec
     dns:
       - 8.8.8.8
       - 1.1.1.1

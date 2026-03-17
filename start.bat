@@ -1,6 +1,6 @@
 @echo off
 REM ══════════════════════════════════════════════════════
-REM CyberSentinel AI v2.0 — Auto Setup (Windows)
+REM CyberSentinel AI v2.0 - Auto Setup (Windows)
 REM Creates .env from .env.example if it doesn't exist
 REM ══════════════════════════════════════════════════════
 

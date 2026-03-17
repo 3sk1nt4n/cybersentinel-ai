@@ -31,7 +31,7 @@ async def shodan_lookup(target: str) -> dict:
                 # Step 1: Resolve domain → IP via Shodan DNS (free tier OK)
                 dns_r = await c.get(f"https://api.shodan.io/dns/resolve?hostnames={target}&key={key}")
                 if dns_r.status_code != 200:
-                    return {"source": "shodan", "error": f"DNS resolve failed: HTTP {dns_r.status_code} — {dns_r.text[:200]}"}
+                    return {"source": "shodan", "error": f"DNS resolve failed: HTTP {dns_r.status_code} - {dns_r.text[:200]}"}
                 dns_data = dns_r.json()
                 ip = dns_data.get(target)
                 if not ip:

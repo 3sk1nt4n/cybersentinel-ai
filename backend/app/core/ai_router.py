@@ -102,7 +102,7 @@ def _get_provider_stream(messages: list[dict], provider: str, model: str | None 
 
 
 # ═══════════════════════════════════════════════
-# FAST RESPONSE CACHE — Instant answers without AI
+# FAST RESPONSE CACHE - Instant answers without AI
 # ═══════════════════════════════════════════════
 
 _GREETING_RESPONSE = (
@@ -348,7 +348,7 @@ async def stream_ai_response(
         )
 
     # ═══════════════════════════════════════════════
-    # FAST RESPONSES — Instant replies for common questions
+    # FAST RESPONSES - Instant replies for common questions
     # (No need to wait 60s for Ollama on "hi" or "who built you")
     # ═══════════════════════════════════════════════
     fast = _get_fast_response(last_user_text)
@@ -358,7 +358,7 @@ async def stream_ai_response(
         return
 
     # ═══════════════════════════════════════════════
-    # STEP 1: Detect intent — should we run tools?
+    # STEP 1: Detect intent - should we run tools?
     # ═══════════════════════════════════════════════
     intent = detect_intent(last_user_text)
 
@@ -369,10 +369,10 @@ async def stream_ai_response(
         return
 
     # ═══════════════════════════════════════════════
-    # STEP 2: No tool intent — normal AI conversation
+    # STEP 2: No tool intent - normal AI conversation
     # ═══════════════════════════════════════════════
 
-    # RAG injection — fenced as separate context to prevent poisoning
+    # RAG injection - fenced as separate context to prevent poisoning
     if use_rag and messages:
         last_user_msg = None
         for m in reversed(messages):
@@ -469,7 +469,7 @@ async def _stream_agentic(
     yield f"data: {json.dumps({'token': nl, 'agent_status': 'running'})}\n\n"
 
     # ═══════════════════════════════════════════════
-    # EXECUTE TOOLS — Real execution, not AI-generated
+    # EXECUTE TOOLS - Real execution, not AI-generated
     # ═══════════════════════════════════════════════
     results = await execute_all_tools(tool_calls)
 
@@ -479,7 +479,7 @@ async def _stream_agentic(
         if (r["result"].get("success", False) or r["result"].get("output"))
         and "error" not in str(r["result"].get("error", "")).lower()[:5]
     )
-    # Be more lenient — count anything with output as success
+    # Be more lenient - count anything with output as success
     for r in results:
         if r["result"].get("output") and not r["result"].get("success"):
             success_count += 1
@@ -491,7 +491,7 @@ async def _stream_agentic(
     tool_results_text = format_tool_results(results)
 
     # ═══════════════════════════════════════════════
-    # SEND TO AI — Analyze REAL results
+    # SEND TO AI - Analyze REAL results
     # ═══════════════════════════════════════════════
 
     last_user_text = ""
