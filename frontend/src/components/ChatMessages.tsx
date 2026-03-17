@@ -15,7 +15,7 @@ interface ChatMessagesProps {
   copied: number | null
   onCopy: (content: string, idx: number) => void
   onStop: () => void
-  chatEndRef: React.RefObject<HTMLDivElement | null>
+  chatEndRef: React.RefObject<HTMLDivElement>
 }
 
 export default function ChatMessages({ msgs, streaming, streamText, streamTimer, copied, onCopy, onStop, chatEndRef }: ChatMessagesProps) {
