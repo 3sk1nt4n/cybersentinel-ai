@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - Splunk SIEM Integration (Phase 3)
+CyberSentinel v3.0 - Splunk SIEM Integration (Phase 3)
 Real Splunk REST API integration for running SPL queries and pulling alerts.
 
 Setup: Add to .env:

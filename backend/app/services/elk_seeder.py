@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - ELK Log Seeder (Phase 3)
+CyberSentinel v3.0 - ELK Log Seeder (Phase 3)
 Seeds Elasticsearch with realistic security logs so users have real data to query.
 Runs on backend startup. Auto-detects if already seeded.
 """
@@ -8,6 +8,9 @@ import random
 import httpx
 from datetime import datetime, timedelta
 from app.core.config import settings
+from app.core.logging import get_logger
+
+logger = get_logger(__name__)
 
 INTERNAL_IPS = ["10.0.1.15", "10.0.1.22", "10.0.1.50", "10.0.1.101", "10.0.2.5", "10.0.2.30", "192.168.1.10", "192.168.1.25"]
 EXTERNAL_IPS = ["45.33.32.156", "185.220.101.33", "91.240.118.172", "103.75.201.44", "162.247.74.27", "198.51.100.23"]
@@ -85,10 +88,10 @@ async def seed_elk_logs():
         async with httpx.AsyncClient(timeout=10, verify=False) as c:
             r = await c.get(f"{base_url}/_cluster/health")
             if r.status_code != 200:
-                print(f"[ELK Seeder] ES not ready: {r.status_code}")
+                logger.warning(f"ES not ready: {r.status_code}")
                 return
     except Exception as e:
-        print(f"[ELK Seeder] ES not reachable: {e}")
+        logger.warning(f"ES not reachable: {e}")
         return
 
     # Check if already seeded
@@ -96,12 +99,12 @@ async def seed_elk_logs():
         async with httpx.AsyncClient(timeout=10, verify=False) as c:
             r = await c.get(f"{base_url}/winlogbeat-cybersentinel/_count")
             if r.status_code == 200 and r.json().get("count", 0) > 50:
-                print(f"[ELK Seeder] Already seeded ({r.json()['count']} events). Skip.")
+                logger.info(f"Already seeded ({r.json()['count']} events). Skip.")
                 return
     except Exception:
         pass
 
-    print("[ELK Seeder] Seeding ~505 security events...")
+    logger.info("Seeding ~505 security events...")
     total = 0
     for idx, gen, count in SEED_PLAN:
         lines = []
@@ -115,11 +118,17 @@ async def seed_elk_logs():
                 r = await c.post(f"{base_url}/_bulk", content=body, headers={"Content-Type": "application/x-ndjson"})
                 if r.status_code == 200:
                     total += count
-                    print(f"[ELK Seeder]   {idx}: {count} events")
+                    logger.info(f"{idx}: {count} events")
         except Exception as e:
-            print(f"[ELK Seeder]   {idx} error: {e}")
+            logger.error(f"{idx} error: {e}")
 
-    print(f"[ELK Seeder] ✅ {total} events seeded")
+    logger.info(f"{total} events seeded")
+
+def generate_sample_events(count: int = 300) -> list[dict]:
+    """Generate N realistic sample security events for bulk ingestion."""
+    generators = [gen_failed_login, gen_success_login, gen_explicit_creds, gen_process,
+                  gen_powershell, gen_dns, gen_linux_auth, gen_firewall, gen_alert]
+    return [random.choice(generators)() for _ in range(count)]
 
 def main():
     import asyncio

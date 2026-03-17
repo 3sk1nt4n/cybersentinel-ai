@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - OpenRouter Service
+CyberSentinel v3.0 - OpenRouter Service
 Handles streaming chat via OpenRouter (100+ models).
 """
 import json

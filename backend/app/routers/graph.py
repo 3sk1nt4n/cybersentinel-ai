@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - Graph Router (Phase 2)
+CyberSentinel v3.0 - Graph Router (Phase 2)
 Neo4j attack surface graph intelligence API.
 """
 from fastapi import APIRouter

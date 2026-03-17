@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - Claude Service
+CyberSentinel v3.0 - Claude Service
 Handles streaming chat with Anthropic Claude API.
 """
 import json

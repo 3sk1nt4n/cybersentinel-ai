@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - Report Export Router (Phase 3)
+CyberSentinel v3.0 - Report Export Router (Phase 3)
 Export chat conversations as PDF or Markdown reports.
 """
 import io
@@ -140,7 +140,7 @@ def _generate_pdf(messages: list[ExportMessage], title: str) -> bytes:
     elements.append(Spacer(1, 20))
     elements.append(HRFlowable(width="100%", thickness=1, color=HexColor('#333333')))
     elements.append(Paragraph(
-        f"CyberSentinel AI v2.0 - Phase 3 | SolventCyber.com | Confidential",
+        f"CyberSentinel AI v3.0 | SolventCyber.com | Confidential",
         subtitle_style,
     ))
 
@@ -166,7 +166,7 @@ def _generate_simple_pdf(messages: list[ExportMessage], title: str) -> bytes:
         lines.append("")
         lines.append("---")
         lines.append("")
-    lines.append("CyberSentinel AI v2.0 - Phase 3 | SolventCyber.com")
+    lines.append("CyberSentinel AI v3.0 | SolventCyber.com")
     return "\n".join(lines).encode("utf-8")
 
 
@@ -200,7 +200,7 @@ async def export_markdown(req: ExportRequest):
         lines.append("")
         lines.append("---")
         lines.append("")
-    lines.append(f"*CyberSentinel AI v2.0 - Phase 3 | SolventCyber.com*")
+    lines.append(f"*CyberSentinel AI v3.0 | SolventCyber.com*")
 
     md_bytes = "\n".join(lines).encode("utf-8")
     return StreamingResponse(

@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - Neo4j Graph Intelligence Service
+CyberSentinel v3.0 - Neo4j Graph Intelligence Service
 Maps attack surfaces, asset relationships, and threat paths as a graph.
 """
 import json

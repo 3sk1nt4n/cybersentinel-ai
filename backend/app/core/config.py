@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - Configuration
+CyberSentinel v3.0 - Configuration
 Reads all settings from .env file automatically.
 """
 from pydantic_settings import BaseSettings
@@ -9,7 +9,7 @@ from typing import Optional
 class Settings(BaseSettings):
     # App
     app_name: str = "CyberSentinel AI"
-    app_version: str = "2.0.0"
+    app_version: str = "3.0.0"
     app_env: str = "development"
     secret_key: str = ""
 
@@ -51,6 +51,14 @@ class Settings(BaseSettings):
     otx_api_key: Optional[str] = None
     virustotal_api_key: Optional[str] = None
     abuseipdb_api_key: Optional[str] = None
+
+    # Dashboard Access Control
+    # Set CYBERSENTINEL_API_KEY in .env to require API key auth on all endpoints
+    cybersentinel_api_key: Optional[str] = None
+
+    # Rate Limiting
+    rate_limit_rpm: int = 60  # requests per minute per IP
+    rate_limit_scan_rpm: int = 10  # scan requests per minute per IP
 
     # Search
     tavily_api_key: Optional[str] = None

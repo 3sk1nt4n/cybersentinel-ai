@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - Chat History Service (Phase 3)
+CyberSentinel v3.0 - Chat History Service (Phase 3)
 Persists chat conversations to SQLite for history sidebar.
 """
 import sqlite3

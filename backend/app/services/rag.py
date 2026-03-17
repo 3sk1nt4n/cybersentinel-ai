@@ -1,11 +1,14 @@
 """
-CyberSentinel v2.0 - RAG Service (Embedded ChromaDB)
+CyberSentinel v3.0 - RAG Service (Embedded ChromaDB)
 Uses ChromaDB in EMBEDDED mode - runs inside the backend process.
 No separate container, no network issues, no healthchecks needed.
 Data persists to /app/data/chromadb volume.
 """
 import hashlib
 import os
+from app.core.logging import get_logger
+
+logger = get_logger(__name__)
 
 _client = None
 CHROMA_PATH = os.environ.get("CHROMA_DATA_DIR", "/app/data/chromadb")
@@ -27,10 +30,10 @@ def get_chroma_client():
         os.makedirs(CHROMA_PATH, exist_ok=True)
         import chromadb
         _client = chromadb.PersistentClient(path=CHROMA_PATH)
-        print(f"[ChromaDB] Embedded mode OK - {CHROMA_PATH}")
+        logger.info(f"Embedded mode OK - {CHROMA_PATH}")
         return _client
     except Exception as e:
-        print(f"[ChromaDB] Init failed: {e}")
+        logger.error(f"Init failed: {e}")
         return None
 
 

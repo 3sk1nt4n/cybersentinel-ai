@@ -1,18 +1,17 @@
 """
-CyberSentinel AI v2.0 - Main Application
-FastAPI backend with provider-agnostic AI, 43 security tools,
+CyberSentinel AI v3.0 - Main Application
+FastAPI backend with provider-agnostic AI, 33 security tools,
 Neo4j graph intelligence, and ChromaDB RAG engine.
 """
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends
-import logging
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings, validate_security_settings
 from app.core.auth import require_api_key
+from app.core.logging import get_logger
 from app.routers import chat, tools, health, graph, knowledge, scan, intel, history, settings as settings_router, threat_feed, export, elk, splunk, wazuh
 
-
-logger = logging.getLogger("cybersentinel")
+logger = get_logger(__name__)
 
 
 @asynccontextmanager
@@ -36,7 +35,7 @@ async def lifespan(app: FastAPI):
                 from app.services.threat_intel_puller import main
                 main()
             except Exception as e:
-                print(f"[ThreatIntel] Startup pull error: {e}")
+                logger.error(f"Startup pull error: {e}")
         threading.Thread(target=_pull_intel, daemon=True).start()
     except Exception as e:
         logger.exception("Threat intel startup thread failed: %s", e)
@@ -50,7 +49,7 @@ async def lifespan(app: FastAPI):
                 from app.services.elk_seeder import seed_elk_logs
                 asyncio.run(seed_elk_logs())
             except Exception as e:
-                print(f"[ELK Seeder] Startup error: {e}")
+                logger.error(f"ELK seeder startup error: {e}")
         threading.Thread(target=_seed_elk, daemon=True).start()
     except Exception as e:
         logger.exception("ELK seeder startup thread failed: %s", e)
@@ -64,9 +63,14 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title=settings.app_name,
     version=settings.app_version,
-    description="Agentic Multi-Tool Security Platform - 43 tools, provider-agnostic AI, graph intelligence, RAG engine",
+    description="Agentic Multi-Tool Security Platform - 33 tools, provider-agnostic AI, graph intelligence, RAG engine",
     lifespan=lifespan,
 )
+
+# Security middleware - rate limiting + optional API key auth
+from app.core.middleware import RateLimitMiddleware, AuthMiddleware
+app.add_middleware(RateLimitMiddleware)
+app.add_middleware(AuthMiddleware)
 
 # CORS - allow frontend to connect
 app.add_middleware(
@@ -74,7 +78,7 @@ app.add_middleware(
     allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"],
+    allow_headers=["*", "x-api-key"],
 )
 
 # Register routers
@@ -99,7 +103,7 @@ async def root():
     return {
         "name": settings.app_name,
         "version": settings.app_version,
-        "tools": 43,
+        "tools": 33,
         "features": ["streaming-ai", "agentic-tools", "neo4j-graph", "chromadb-rag", "multi-provider", "live-scans", "threat-intel", "chat-history", "pdf-export", "sqlmap", "elk-siem", "splunk-siem", "wazuh-siem"],
         "docs": "/docs",
     }

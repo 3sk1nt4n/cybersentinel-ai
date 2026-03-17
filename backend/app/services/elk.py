@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - ELK Stack SIEM Integration (Phase 3)
+CyberSentinel v3.0 - ELK Stack SIEM Integration (Phase 3)
 Real Elasticsearch integration for querying security logs.
 Connects to any Elasticsearch instance (local Docker, Elastic Cloud, etc.)
 

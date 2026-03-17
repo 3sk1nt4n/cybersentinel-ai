@@ -1,4 +1,4 @@
-# 📖 CyberSentinel v2.0 — Detailed Setup Guide
+# 📖 CyberSentinel v3.0 — Detailed Setup Guide
 
 This guide assumes **zero coding knowledge**. Every step is explained.
 
@@ -6,7 +6,7 @@ This guide assumes **zero coding knowledge**. Every step is explained.
 
 ## What is This?
 
-CyberSentinel AI is a cybersecurity platform with 43 security tools powered by AI. Think of it as having a senior security engineer available 24/7 that can:
+CyberSentinel AI is a cybersecurity platform with 33 security tools powered by AI. Think of it as having a senior security engineer available 24/7 that can:
 - Generate detection rules (SIEM, YARA, Sigma, Snort)
 - Analyze threats and vulnerabilities
 - Run compliance audits (CIS, NIST, HIPAA, PCI-DSS)
@@ -146,7 +146,7 @@ That's it! 🎉
 cd cybersentinel-v2
 git init
 git add .
-git commit -m "CyberSentinel AI v2.0 — Initial release"
+git commit -m "CyberSentinel AI v3.0 — Initial release"
 git branch -M main
 git remote add origin https://github.com/YOUR_USERNAME/cybersentinel-v2.git
 git push -u origin main

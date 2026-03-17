@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - AI Guardrails (Defense-in-Depth)
+CyberSentinel v3.0 - AI Guardrails (Defense-in-Depth)
 
 Code-level input/output filtering that works REGARDLESS of LLM compliance.
 This is NOT a system prompt - it's hard enforcement that Qwen cannot bypass.

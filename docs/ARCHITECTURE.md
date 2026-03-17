@@ -1,4 +1,4 @@
-# 🏗️ CyberSentinel v2.0  \\\  Architecture
+# 🏗️ CyberSentinel v3.0 — Architecture
 
 ## Overview
 
@@ -74,7 +74,7 @@ The router selects the provider based on:
 | No database | Neo4j graph + ChromaDB RAG |
 | Manual nginx setup | Docker handles networking |
 | No API | Full REST API at /docs |
-| All 33 tools with queries |
+| 8 tools with queries | All 33 tools with queries |
 | No knowledge base | Seeded security KB (MITRE, CIS, NIST) |
 
 ## Phase 2 Features

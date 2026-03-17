@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - OpenAI Service
+CyberSentinel v3.0 - OpenAI Service
 Handles streaming chat with OpenAI GPT API.
 """
 import json

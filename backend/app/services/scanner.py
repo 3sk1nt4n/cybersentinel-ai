@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - Scan Execution Service (Phase 3)
+CyberSentinel v3.0 - Scan Execution Service (Phase 3)
 Executes real security tools inside the sandboxed container.
 Uses Docker SDK to run commands in the 'sandbox' container.
 """

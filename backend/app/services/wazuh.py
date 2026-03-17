@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - Wazuh SIEM Integration (Phase 3)
+CyberSentinel v3.0 - Wazuh SIEM Integration (Phase 3)
 Real Wazuh Manager REST API integration.
 
 Setup: Add to .env:

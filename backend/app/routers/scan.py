@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - Scan Router (Phase 3)
+CyberSentinel v3.0 - Scan Router (Phase 3)
 API endpoints for executing real security scans in the sandbox.
 """
 from fastapi import APIRouter

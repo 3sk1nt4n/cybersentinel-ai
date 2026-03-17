@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - Ollama Service
+CyberSentinel v3.0 - Ollama Service
 Handles streaming chat with local Ollama models.
 """
 import json

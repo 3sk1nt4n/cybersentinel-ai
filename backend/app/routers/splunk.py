@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - Splunk SIEM Router (Phase 3)
+CyberSentinel v3.0 - Splunk SIEM Router (Phase 3)
 """
 from fastapi import APIRouter
 from pydantic import BaseModel

@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - History Router (Phase 3)
+CyberSentinel v3.0 - History Router (Phase 3)
 Chat history persistence API.
 """
 from fastapi import APIRouter

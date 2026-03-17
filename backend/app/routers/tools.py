@@ -1,13 +1,13 @@
 """
-CyberSentinel v2.0 - Tools Router
-Serves the 43-tool arsenal and their sample queries.
+CyberSentinel v3.0 - Tools Router
+Serves the 33-tool arsenal and their sample queries.
 """
 from fastapi import APIRouter
 
 router = APIRouter(prefix="/tools", tags=["tools"])
 
 # ═══════════════════════════════════════════════
-# TOOL DEFINITIONS - 43 tools across 9 categories
+# TOOL DEFINITIONS - 33 tools across 6 categories
 # ═══════════════════════════════════════════════
 TOOLS = [
     # ══════════════════════════════════════════════════════

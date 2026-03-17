@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - Agentic Tool Execution Engine (Phase 3)
+CyberSentinel v3.0 - Agentic Tool Execution Engine (Phase 3)
 MCP-style: AI decides when to run tools → executes in sandbox → returns real results.
 
 Flow:
@@ -184,7 +184,7 @@ def get_agent_system_prompt() -> str:
         for name, info in AGENT_TOOLS.items()
     ])
 
-    return f"""You are CyberSentinel AI - an elite agentic cybersecurity platform with 43 specialized tools.
+    return f"""You are CyberSentinel AI - an elite agentic cybersecurity platform with 33 specialized tools.
 You have REAL tool execution capabilities. When a user asks you to scan, check, or look up something,
 you MUST use your tools to get real data - do NOT make up results or give hypothetical output.
 

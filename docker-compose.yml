@@ -1,5 +1,5 @@
 # ══════════════════════════════════════════════════════
-# CyberSentinel AI v2.0 — Docker Compose
+# CyberSentinel AI v3.0 — Docker Compose
 # Usage: docker compose up -d
 # ══════════════════════════════════════════════════════
 
@@ -10,10 +10,14 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+        NEXT_PUBLIC_API_KEY: ${CYBERSENTINEL_API_KEY:-}
     ports:
       - "3000:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - NEXT_PUBLIC_API_KEY=${CYBERSENTINEL_API_KEY:-}
     depends_on:
       backend:
         condition: service_healthy
@@ -42,28 +46,27 @@ services:
       start_period: 30s
     volumes:
       - backend_data:/app/data
-      - /var/run/docker.sock:/var/run/docker.sock  # Phase 3: access sandbox container
+      - /var/run/docker.sock:/var/run/docker.sock:ro  # Read-only access to sandbox container
     restart: unless-stopped
 
   # ── OLLAMA (Local AI) ──────────────────────────────
   ollama:
     image: ollama/ollama:latest
     ports:
-      - "127.0.0.1:11434:11434"  # V9: NEVER bind 0.0.0.0 — localhost only
+      - "127.0.0.1:11434:11434"  # Localhost only — never bind 0.0.0.0
     environment:
-      - OLLAMA_HOST=0.0.0.0             # Must listen on all interfaces for Docker inter-container networking
-      - OLLAMA_MAX_LOADED_MODELS=1      # V16: Prevent memory exhaustion
+      - OLLAMA_HOST=0.0.0.0             # Listen on all interfaces for Docker inter-container networking
+      - OLLAMA_MAX_LOADED_MODELS=1      # Prevent memory exhaustion
       - OLLAMA_KEEP_ALIVE=5m            # Unload idle models after 5 min
-      # NOTE: External access is blocked by "127.0.0.1:11434:11434" port binding above
     volumes:
       - ollama_data:/root/.ollama
     deploy:
       resources:
         limits:
-          memory: 8G    # V3/V16: Prevent OOM from DoS
+          memory: 8G
           cpus: "4.0"
     security_opt:
-      - no-new-privileges:true   # V2: Prevent privilege escalation
+      - no-new-privileges:true
     healthcheck:
       test: ["CMD-SHELL", "ollama list || exit 1"]
       interval: 10s
@@ -96,12 +99,11 @@ services:
   neo4j:
     image: neo4j:5-community
     ports:
-      - "127.0.0.1:7474:7474"   # Localhost only (was 0.0.0.0 — V9 fix)
+      - "127.0.0.1:7474:7474"   # Localhost only
       - "127.0.0.1:7687:7687"   # Localhost only
     environment:
-      - NEO4J_AUTH=neo4j/cybersentinel2024
+      - NEO4J_AUTH=neo4j/${NEO4J_PASSWORD:-cybersentinel2024}
       - NEO4J_PLUGINS=["apoc"]
-      # Security: restrict APOC procedures to safe subset only
       - NEO4J_dbms_security_procedures_allowlist=apoc.coll.*,apoc.convert.*,apoc.load.json,apoc.load.csv,apoc.meta.*,db.*,dbms.*
     volumes:
       - neo4j_data:/data
@@ -120,7 +122,7 @@ services:
       start_period: 30s
     restart: unless-stopped
 
-  # ── SANDBOX (Security Tools) — Phase 3 ─────────────
+  # ── SANDBOX (Security Tools) ────────────────────────
   sandbox:
     build:
       context: ./sandbox
@@ -128,12 +130,18 @@ services:
     container_name: cybersentinel-v2-sandbox-1
     restart: unless-stopped
     # No ports exposed — backend communicates via docker exec
-    # Network access for scans:
     dns:
       - 8.8.8.8
       - 1.1.1.1
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: "2.0"
+    security_opt:
+      - no-new-privileges:true
 
-  # ── ELASTICSEARCH (ELK SIEM) — Phase 3 ────────────
+  # ── ELASTICSEARCH (ELK SIEM) ────────────────────────
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
     environment:
@@ -141,9 +149,14 @@ services:
       - xpack.security.enabled=false
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ports:
-      - "9200:9200"
+      - "127.0.0.1:9200:9200"  # Localhost only
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: "2.0"
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
       interval: 15s
@@ -154,7 +167,7 @@ services:
   kibana:
     image: docker.elastic.co/kibana/kibana:8.15.0
     ports:
-      - "5601:5601"
+      - "127.0.0.1:5601:5601"  # Localhost only
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     depends_on:

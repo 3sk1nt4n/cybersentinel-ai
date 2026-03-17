@@ -1,11 +1,14 @@
 """
-CyberSentinel v2.0 - Response Cache Service
+CyberSentinel v3.0 - Response Cache Service
 Serves 493 pre-built expert responses for sample queries.
 Falls through to AI for free-form questions.
 """
 import json
 import os
 import re
+from app.core.logging import get_logger
+
+logger = get_logger(__name__)
 
 _cache: dict[str, str] = {}
 
@@ -31,7 +34,7 @@ def load_cache():
         for key, value in raw.items():
             _cache[_normalize(key)] = value
     except Exception as e:
-        print(f"[Cache] Failed to load: {e}")
+        logger.error(f"Failed to load: {e}")
 
 
 def get_cached_response(query: str) -> str | None:

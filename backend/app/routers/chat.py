@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - Chat Router (Phase 3)
+CyberSentinel v3.0 - Chat Router (Phase 3)
 Cache-first: serves 493 pre-built responses instantly.
 Falls through to live AI for free-form questions.
 """

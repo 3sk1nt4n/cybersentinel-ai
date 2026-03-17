@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - Intent Detector (Phase 3)
+CyberSentinel v3.0 - Intent Detector (Phase 3)
 Pattern-matches user queries to auto-detect which tools to run.
 This bypasses the unreliable AI tool_call approach for local models.
 

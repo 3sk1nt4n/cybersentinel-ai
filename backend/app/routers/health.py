@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - Health Router (Phase 2)
+CyberSentinel v3.0 - Health Router (Phase 2)
 System health checks for all services including Neo4j and ChromaDB.
 """
 from fastapi import APIRouter

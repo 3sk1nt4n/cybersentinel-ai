@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - Threat Intel Router (Phase 3)
+CyberSentinel v3.0 - Threat Intel Router (Phase 3)
 Live threat intelligence lookup API.
 """
 from fastapi import APIRouter
@@ -46,7 +46,7 @@ async def list_intel_sources():
         "sources": [
             {"id": "shodan", "name": "Shodan", "configured": bool(settings.shodan_api_key), "description": "Internet-wide scanning & host discovery"},
             {"id": "virustotal", "name": "VirusTotal", "configured": bool(settings.virustotal_api_key), "description": "Multi-AV scanning & threat analysis"},
-            {"id": "abuseipdb", "name": "AbuseIPDB", "configured": bool(settings.otx_api_key), "description": "IP abuse & reputation database"},
+            {"id": "abuseipdb", "name": "AbuseIPDB", "configured": bool(settings.abuseipdb_api_key), "description": "IP abuse & reputation database"},
             {"id": "otx", "name": "AlienVault OTX", "configured": bool(settings.otx_api_key), "description": "Open threat intelligence exchange"},
             {"id": "censys", "name": "Censys", "configured": bool(settings.censys_api_id), "description": "Internet asset discovery"},
         ]

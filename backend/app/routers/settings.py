@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - Settings Router (Phase 3)
+CyberSentinel v3.0 - Settings Router (Phase 3)
 Manage configuration from the UI - API keys, provider, model.
 Changes persist to .env file so they survive container restarts.
 """
@@ -7,7 +7,10 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 from typing import Optional
 from app.core.config import settings
+from app.core.logging import get_logger
 import os
+
+logger = get_logger(__name__)
 
 router = APIRouter(prefix="/settings", tags=["settings"])
 
@@ -71,9 +74,9 @@ def _load_persistent_settings():
                 if field and value:
                     setattr(settings, field, value)
 
-        print(f"[Settings] Loaded persistent config from {env_path}")
+        logger.info(f"Loaded persistent config from {env_path}")
     except Exception as e:
-        print(f"[Settings] Warning: Could not load persistent config: {e}")
+        logger.warning(f"Could not load persistent config: {e}")
 
 
 # Load persistent settings on import (backend startup)
@@ -121,10 +124,10 @@ def _persist_to_env(updates: dict[str, str]):
         except Exception:
             pass
 
-        print(f"[Settings] Persisted {len(filtered)} setting(s) to {env_path}")
+        logger.info(f"Persisted {len(filtered)} setting(s) to {env_path}")
 
     except Exception as e:
-        print(f"[Settings] Warning: Could not persist: {e}")
+        logger.warning(f"Could not persist: {e}")
 
 
 class UpdateSettings(BaseModel):

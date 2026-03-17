@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - Threat Intelligence Service (Phase 3)
+CyberSentinel v3.0 - Threat Intelligence Service (Phase 3)
 Live lookups against Shodan, VirusTotal, AbuseIPDB, and AlienVault OTX.
 Works with or without API keys - degrades gracefully.
 """
@@ -118,13 +118,14 @@ async def virustotal_lookup(indicator: str, indicator_type: str = "auto") -> dic
 
 async def abuseipdb_lookup(ip: str) -> dict:
     """Check IP reputation on AbuseIPDB."""
-    # AbuseIPDB uses OTX key or its own - we'll use a free endpoint
+    if not settings.abuseipdb_api_key:
+        return {"source": "abuseipdb", "error": "No API key configured. Add ABUSEIPDB_API_KEY to .env"}
     try:
         async with httpx.AsyncClient(timeout=TIMEOUT) as c:
             r = await c.get(
                 f"https://api.abuseipdb.com/api/v2/check",
                 params={"ipAddress": ip, "maxAgeInDays": 90},
-                headers={"Key": settings.otx_api_key or "", "Accept": "application/json"},
+                headers={"Key": settings.abuseipdb_api_key or "", "Accept": "application/json"},
             )
             if r.status_code == 200:
                 data = r.json().get("data", {})
@@ -139,7 +140,7 @@ async def abuseipdb_lookup(ip: str) -> dict:
                     "last_reported": data.get("lastReportedAt"),
                     "is_public": data.get("isPublic"),
                 }
-            return {"source": "abuseipdb", "error": f"HTTP {r.status_code} - add OTX_API_KEY to .env for AbuseIPDB lookups"}
+            return {"source": "abuseipdb", "error": f"HTTP {r.status_code} - add ABUSEIPDB_API_KEY to .env for AbuseIPDB lookups"}
     except Exception as e:
         return {"source": "abuseipdb", "error": str(e)[:200]}
 

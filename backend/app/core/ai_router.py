@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - AI Router (Phase 3: Direct Execution)
+CyberSentinel v3.0 - AI Router (Phase 3: Direct Execution)
 
 The key insight: Local models (Qwen) don't reliably output <tool_call> tags.
 Instead, we detect intent DIRECTLY from the user's message, execute tools first,
@@ -114,7 +114,7 @@ _GREETING_RESPONSE = (
 )
 
 _IDENTITY_RESPONSE = (
-    "🛡️ **CyberSentinel AI** v2.0 | Phase 3: Agentic\n\n"
+    "🛡️ **CyberSentinel AI** v3.0 | Agentic Security Platform\n\n"
     "- Creator: 🏅 [3sk1nt4n](https://www.credly.com/users/eskintan/badges#credly)\n"
     "- Company: [Solvent CyberSecurity](https://solventcyber.com)\n"
     "- Arsenal: 33 tools across 6 categories\n"

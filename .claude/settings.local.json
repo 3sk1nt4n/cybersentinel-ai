@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh repo:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(while read:*)",
+      "Bash(do sed:*)",
+      "Bash(done)",
+      "Bash(wc:*)",
+      "Bash(git:*)",
+      "Bash(ls -la C:/Users/Just/OneDrive/Desktop/SITEX/cybersentinel-v2/backend/tests/*.py C:/Users/Just/OneDrive/Desktop/SITEX/cybersentinel-v2/backend/app/core/logging.py)",
+      "Bash(python3 -c \"import json; d=json.load\\(open\\(''C:/Users/Just/OneDrive/Desktop/SITEX/cybersentinel-v2/backend/app/data/cached_responses.json''\\)\\); print\\(len\\(d\\)\\)\")",
+      "Bash(python -c \"import json; d=json.load\\(open\\(''C:/Users/Just/OneDrive/Desktop/SITEX/cybersentinel-v2/backend/app/data/cached_responses.json''\\)\\); print\\(len\\(d\\)\\)\")",
+      "Bash(python -m pytest tests/ -v --tb=short)",
+      "Bash(pip install:*)",
+      "Bash(python -m compileall app/ -q)",
+      "Bash(cd:*)",
+      "Bash(docker compose:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx -p typescript tsc --noEmit)",
+      "Bash(python -c \":*)",
+      "Bash(gh auth:*)"
+    ]
+  }
+}

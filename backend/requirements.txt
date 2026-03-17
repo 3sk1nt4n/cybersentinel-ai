@@ -12,3 +12,5 @@ sse-starlette==2.2.1
 python-multipart==0.0.20
 requests==2.32.3
 reportlab==4.2.5
+pytest==8.3.4
+httpx[http2]==0.28.1

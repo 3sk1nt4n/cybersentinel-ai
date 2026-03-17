@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - Knowledge Base Router (Phase 2)
+CyberSentinel v3.0 - Knowledge Base Router (Phase 2)
 RAG knowledge base management API.
 """
 from fastapi import APIRouter, UploadFile, File

@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - ELK Stack SIEM Router (Phase 3)
+CyberSentinel v3.0 - ELK Stack SIEM Router (Phase 3)
 Real Elasticsearch / ELK integration API endpoints.
 
 Setup: Add to .env:

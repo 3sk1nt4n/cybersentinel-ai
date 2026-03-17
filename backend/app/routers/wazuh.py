@@ -1,4 +1,4 @@
-"""CyberSentinel v2.0 - Wazuh SIEM Router (Phase 3)"""
+"""CyberSentinel v3.0 - Wazuh SIEM Router (Phase 3)"""
 from fastapi import APIRouter
 from pydantic import BaseModel
 from app.services.wazuh import (

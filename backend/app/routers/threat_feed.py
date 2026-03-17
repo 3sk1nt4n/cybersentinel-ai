@@ -1,5 +1,5 @@
 """
-CyberSentinel v2.0 - Live Threat Intel Feed Router
+CyberSentinel v3.0 - Live Threat Intel Feed Router
 Serves live CVEs, IOCs, C2 data from threat_intel_puller.py SQLite DB.
 """
 import sqlite3
@@ -9,6 +9,9 @@ import asyncio
 import threading
 from fastapi import APIRouter
 from pathlib import Path
+from app.core.logging import get_logger
+
+logger = get_logger(__name__)
 
 router = APIRouter(prefix="/threat-feed", tags=["threat-feed"])
 
@@ -197,7 +200,7 @@ async def trigger_pull():
             from app.services.threat_intel_puller import main
             main()
         except Exception as e:
-            print(f"[ThreatIntel] Pull error: {e}")
+            logger.error(f"Pull error: {e}")
 
     thread = threading.Thread(target=_run, daemon=True)
     thread.start()
