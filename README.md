@@ -77,7 +77,7 @@ All 33 tools are loaded and ready. Start scanning.
 
 | Category | Tools | Count |
 |----------|-------|-------|
-| **Live Scanners** | Nmap, SSL/TLS, DNS Recon, Nikto, Nuclei, SQLMap, Subfinder, WHOIS, HTTP Headers, Ping/Traceroute, OWASP ZAP | 11 |
+| **Live Scanners** | Nmap, SSL/TLS, DNS Recon, Nikto, Nuclei, SQLMap, Subfinder, WHOIS, HTTP Headers, Ping/Traceroute, ZAP by Checkmarx | 11 |
 | **Threat Intel APIs** | Shodan, VirusTotal, AbuseIPDB, AlienVault OTX, NVD/CISA KEV | 5 |
 | **SIEM Integration** | ELK Stack, Splunk, Wazuh | 3 |
 | **AI Detection** | Zeek Analyzer, Threat Detection, Log Analyzer, IOC Extractor, Email Phishing Analyzer | 5 |
