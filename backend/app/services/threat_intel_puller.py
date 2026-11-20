@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """
 CyberSentinel Threat Intelligence Feed Puller
-Pulls from 7 free threat intel sources and stores in SQLite + ChromaDB
+Pulls from 8 free threat intel sources and stores in SQLite + ChromaDB
 Run as scheduled task every 2 hours
 """
 
 import sqlite3
+import csv
+import io
 import json
 import os
 import sys
@@ -79,7 +81,7 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             indicator TEXT NOT NULL,
             type TEXT NOT NULL,  -- ip, domain, hash_md5, hash_sha1, hash_sha256, url, email
-            source TEXT NOT NULL,  -- otx, abusech, feodo, urlhaus
+            source TEXT NOT NULL,  -- otx, abusech, feodo, urlhaus, netapi
             threat_type TEXT,  -- malware, c2, phishing, ransomware
             malware_family TEXT,
             confidence INTEGER DEFAULT 50,  -- 0-100
@@ -658,6 +660,8 @@ def pull_abusech(conn):
                     total += 1
                 except:
                     pass
+        else:
+            log.warning("URLhaus returned HTTP %d (the API needs an abuse.ch Auth-Key now)", resp.status_code)
     except Exception as e:
         log.error("URLhaus error: %s", e)
     
@@ -677,6 +681,8 @@ def pull_abusech(conn):
                         total += 1
                     except:
                         pass
+        else:
+            log.warning("Malware Bazaar returned HTTP %d (the keyless export was retired)", resp.status_code)
     except Exception as e:
         log.error("Malware Bazaar error: %s", e)
     
@@ -688,7 +694,58 @@ def pull_abusech(conn):
 
 
 # ═══════════════════════════════════════════════════════
-# FEED 6: Cleanup old data (90 days)
+# FEED 6: NetAPI - Attacker IPs from honeypot sensors
+# ═══════════════════════════════════════════════════════
+def pull_netapi(conn, limit=200):
+    # Free list, no API key (CC BY 4.0): https://netapi.com/compromised-ips/
+    log.info("Pulling NetAPI attacker IPs...")
+    start = time.time()
+    total = 0
+    error_msg = ""
+    confidence_by_category = {"A": 90, "B": 80, "C": 70}
+
+    try:
+        resp = requests.get("https://netapi.com/api2/?method=compromised&dataset_type=ip&format=csv", timeout=30)
+        if resp.status_code == 200:
+            reader = csv.DictReader(io.StringIO(resp.text))
+            if "ip" in (reader.fieldnames or []):
+                # Most recent attacks first, same "recent" cut as URLhaus and Malware Bazaar
+                rows = sorted(reader, key=lambda r: r.get("last_seen") or "", reverse=True)
+                for row in rows[:limit]:
+                    ip = (row.get("ip") or "").strip()
+                    if not ip:
+                        continue
+                    tags = json.dumps([t for t in (row.get("threats") or "").split("|") if t])
+                    confidence = confidence_by_category.get(row.get("category"), 70)
+
+                    try:
+                        conn.execute("""
+                            INSERT OR REPLACE INTO iocs (indicator, type, source, threat_type, confidence, tags, first_seen, last_seen)
+                            VALUES (?, 'ip', 'netapi', ?, ?, ?, ?, ?)
+                        """, (ip, row.get("top_threat", ""), confidence, tags, row.get("first_seen", ""), row.get("last_seen", "")))
+                        total += 1
+                    except:
+                        pass
+            else:
+                error_msg = "Unexpected response (no CSV header)"
+        else:
+            error_msg = f"HTTP {resp.status_code}"
+    except Exception as e:
+        error_msg = str(e)[:200]
+
+    if error_msg:
+        log.error("NetAPI error: %s", error_msg)
+
+    conn.commit()
+    duration = time.time() - start
+    status = "success" if total > 0 else "error"
+    log.info("NetAPI: Pulled %d attacker IPs in %.1fs", total, duration)
+    update_feed_status(conn, "netapi", total, status, error_msg, duration)
+    return total
+
+
+# ═══════════════════════════════════════════════════════
+# FEED 7: Cleanup old data (90 days)
 # ═══════════════════════════════════════════════════════
 def cleanup_old_data(conn, days=90):
     cutoff = (datetime.utcnow() - timedelta(days=days)).isoformat()
@@ -794,6 +851,7 @@ def main():
     total += pull_epss(conn)
     total += pull_otx_pulses(conn)
     total += pull_abusech(conn)
+    total += pull_netapi(conn)
     
     cleanup_old_data(conn)
     summary = generate_summary(conn)
