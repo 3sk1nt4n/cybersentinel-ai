@@ -33,7 +33,7 @@ CyberSentinel AI is an **agentic cybersecurity platform** that runs entirely on 
 - **Neo4j knowledge graph** maps attack surfaces, MITRE techniques, and threat relationships
 - **ChromaDB RAG engine** grounds AI responses in real security knowledge (MITRE, CIS, NIST)
 - **ELK Stack SIEM** integration with pre-seeded security events for log analysis
-- **Live threat intel** pulled from NVD, CISA KEV, EPSS, OTX, and Abuse.ch
+- **Live threat intel** pulled from NVD, CISA KEV, EPSS, OTX, Abuse.ch, and NetAPI
 
 No cloud dependencies required. No subscriptions. No fake outputs.
 
